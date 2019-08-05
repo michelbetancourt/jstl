@@ -16,7 +16,7 @@ import org.jstlang.compiler.step.StepHandler;
 import org.jstlang.compiler.step.StepHandlerFactory;
 import org.jstlang.compiler.target.TargetHandler;
 import org.jstlang.compiler.target.TargetHandlerFactory;
-import org.jstlang.converters.fasterjackson.FasterJacksonTypeConverter;
+import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
 import org.jstlang.domain.config.ObjectDef;
 import org.jstlang.domain.config.PathDef;
 
@@ -61,7 +61,7 @@ public class JSTLangCompiler {
 			func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
 		}
 		
-		return TargetMapBinder.defaultBinder(func)
-				.typeConverter(FasterJacksonTypeConverter.typeConverter(objectDef.getTargetType()));
+		return TargetObjectBinder.defaultBinder(func)
+				.targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getTargetType()));
 	}
 }

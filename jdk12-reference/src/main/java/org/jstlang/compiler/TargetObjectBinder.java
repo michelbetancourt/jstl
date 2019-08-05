@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import org.jstlang.converters.fasterjackson.FasterJacksonMapConverter;
 import org.jstlang.util.Stopwatch;
 
 import com.google.common.collect.Maps;
@@ -25,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Accessors(fluent = true)
 @RequiredArgsConstructor(staticName = "defaultBinder")
 @Slf4j
-public class TargetMapBinder implements Function<Object, Object> {
+public class TargetObjectBinder implements Function<Object, Object> {
 	
 	private @Nonnull Consumer<Document> binder;
 	
@@ -35,7 +36,8 @@ public class TargetMapBinder implements Function<Object, Object> {
 	
 	private int totalBindings = -1;
 	
-	private @Nonnull Function<Object, Object> typeConverter = Function.identity();
+	private @Nonnull Function<Object, Map<String, Object>> sourceConverter = FasterJacksonMapConverter.typeConverter();
+	private @Nonnull Function<Object, Object> targetConverter = Function.identity();
 
 	@Override
 	public Object apply(Object sourceObject) {
@@ -43,25 +45,25 @@ public class TargetMapBinder implements Function<Object, Object> {
 		log.debug("About to start binding,totalBindings={}", totalBindings);
 		Stopwatch timer = Stopwatch.start();
 		final Map<String, Object> targetMap = Maps.newLinkedHashMap();
-		
+		Object targetObject;
 		try {
-			DocumentContext read = JsonPath.parse(sourceObject, jsonConfig);
+			Map<String, Object> sourceMap = sourceConverter.apply(sourceObject);
+			DocumentContext read = JsonPath.parse(sourceMap, jsonConfig);
 			DocumentContext write = JsonPath.parse(targetMap, jsonConfig);
 			
 			binder.accept(Document.builder()
 					.sourceObject(read)
 					.targetObject(write)
 					.build());
+			targetObject = targetConverter.apply(targetMap);
 		} catch(RuntimeException e) {
 			log.error("Error caught during source to target bindings,totalBindings={},durationMillis={}", totalBindings, timer.elapsedMillis(), e);
 			throw e;
 		}
 		
-		log.info("Done processing bindings,totalBindings={},targetMapKeySize={},durationMillis={}", totalBindings, targetMap.keySet().size(), timer.elapsedMillis());
+		log.info("Done processing bindings,totalBindings={},totalKeys={},durationMillis={}", totalBindings, targetMap.keySet().size(), timer.elapsedMillis());
 		
-		
-		return typeConverter
-				.apply(targetMap);
+		return targetObject;
 	}
 
 }

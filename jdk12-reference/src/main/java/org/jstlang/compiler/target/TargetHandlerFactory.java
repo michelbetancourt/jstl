@@ -2,7 +2,7 @@ package org.jstlang.compiler.target;
 
 import java.util.function.Function;
 
-import org.jstlang.converters.fasterjackson.FasterJacksonTypeConverter;
+import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
 import org.jstlang.domain.config.TargetDef;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class TargetHandlerFactory implements Function<TargetDef, TargetHandler> 
 	public TargetHandler apply(TargetDef definition) {
 		
 		return TargetPathHandler.targetPath(definition.getPath())
-				.typeConverter(FasterJacksonTypeConverter.typeConverter(definition.getType()));
+				.typeConverter(FasterJacksonObjectConverter.typeConverter(definition.getType()));
 	}
 
 }
