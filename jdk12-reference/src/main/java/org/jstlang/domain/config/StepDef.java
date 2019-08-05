@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class StepDef {
 
 	private IterableDef iterable;
-	private NumberDef math;
+	private NumberDef number;
 	
 	@Builder.Default
 	private SkipDef skip = SkipDef.builder().build();
