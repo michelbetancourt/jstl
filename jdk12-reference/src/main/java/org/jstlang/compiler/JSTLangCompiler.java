@@ -31,38 +31,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JSTLangCompiler {
 
-	private @Nonnull SourceHandlerFactory sourceHandlerFactory = SourceHandlerFactory.defaultHandler();
-	private @Nonnull StepHandlerFactory stepHandlerFactory = StepHandlerFactory.defaultHandler();
-	private @Nonnull TargetHandlerFactory targetHandlerFactory = TargetHandlerFactory.defaultHandler();
-	
-	
-	public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
-		
-		List<PathDef> pathDefs = Optional.ofNullable(objectDef.getPaths())
-				.orElse(Collections.emptyList());
-		
-		if(pathDefs.isEmpty()) {
-			throw new IllegalArgumentException("No mappings to compile!");
-		}
-		
-		Consumer<Document> func = doc -> {
-			log.info("Starting conversion");
-			log.debug("Starting conversion,sourceDocument={},targetDocument={}", doc.getSourceObject(), doc.getTargetObject());
-		};
-		
-		Iterator<PathDef> it = pathDefs.stream()
-				.filter(Objects::nonNull)
-				.iterator();
-		
-		while(it.hasNext()) {
-			PathDef pathDef = it.next();
-			SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef.getSource());
-		    StepHandler stepHandler = stepHandlerFactory.apply(pathDef.getSteps());
-			TargetHandler targetHandler = targetHandlerFactory.apply(pathDef.getTarget());
-			func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
-		}
-		
-		return TargetObjectBinder.defaultBinder(func)
-				.targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getTargetType()));
-	}
+    private @Nonnull SourceHandlerFactory sourceHandlerFactory = SourceHandlerFactory.defaultHandler();
+    private @Nonnull StepHandlerFactory stepHandlerFactory = StepHandlerFactory.defaultHandler();
+    private @Nonnull TargetHandlerFactory targetHandlerFactory = TargetHandlerFactory.defaultHandler();
+
+    public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
+
+        List<PathDef> pathDefs = Optional.ofNullable(objectDef.getPaths()).orElse(Collections.emptyList());
+
+        if (pathDefs.isEmpty()) {
+            throw new IllegalArgumentException("No mappings to compile!");
+        }
+
+        Consumer<Document> func = doc -> {
+            log.info("Starting conversion");
+            log.debug("Starting conversion,sourceDocument={},targetDocument={}", doc.getSourceObject(),
+                    doc.getTargetObject());
+        };
+
+        Iterator<PathDef> it = pathDefs.stream().filter(Objects::nonNull).iterator();
+
+        while (it.hasNext()) {
+            PathDef pathDef = it.next();
+            SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef.getSource());
+            StepHandler stepHandler = stepHandlerFactory.apply(pathDef.getSteps());
+            TargetHandler targetHandler = targetHandlerFactory.apply(pathDef.getTarget());
+            func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
+        }
+
+        return TargetObjectBinder.defaultBinder(func)
+                .targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getTargetType()));
+    }
 }

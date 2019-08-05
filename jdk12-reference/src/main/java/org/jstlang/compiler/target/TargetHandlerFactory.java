@@ -10,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(staticName = "defaultHandler")
 public class TargetHandlerFactory implements Function<TargetDef, TargetHandler> {
 
-	@Override
-	public TargetHandler apply(TargetDef definition) {
-		
-		return TargetPathHandler.targetPath(definition.getPath())
-				.typeConverter(FasterJacksonObjectConverter.typeConverter(definition.getType()));
-	}
+    @Override
+    public TargetHandler apply(TargetDef definition) {
+
+        return TargetPathHandler.targetPath(definition.getPath())
+                .typeConverter(FasterJacksonObjectConverter.typeConverter(definition.getType()));
+    }
 
 }

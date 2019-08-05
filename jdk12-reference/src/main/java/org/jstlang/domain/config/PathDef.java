@@ -14,13 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PathDef {
 
-	private SourceDef source;
-	private TargetDef target;
-	
-	@Builder.Default
-	private ValueSourceDef sourceIs = ValueSourceDef.source;
-	
-	private List<StepDef> steps;
-	
+    private SourceDef source;
+    private TargetDef target;
+
+    @Builder.Default
+    private ValueSourceDef sourceIs = ValueSourceDef.source;
+
+    private List<StepDef> steps;
+
 }
- 

@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class IterableDef {
 
-	private PathDef entries;
-	
+    private PathDef entries;
+
 }

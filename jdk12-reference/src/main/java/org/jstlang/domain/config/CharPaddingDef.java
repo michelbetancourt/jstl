@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CharPaddingDef {
 
-	private Character left;
-	private Character right;
-	private Integer limit;
+    private Character left;
+    private Character right;
+    private Integer limit;
 
 }

@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StepDef {
 
-	private IterableDef iterable;
-	private NumberDef number;
-	
-	@Builder.Default
-	private SkipDef skip = SkipDef.builder().build();
+    private IterableDef iterable;
+    private NumberDef number;
+
+    @Builder.Default
+    private SkipDef skip = SkipDef.builder().build();
 
 }

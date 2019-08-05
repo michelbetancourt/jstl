@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(staticName = "defaultHandler")
 public class SourceHandlerFactory implements Function<SourceDef, SourceHandler> {
 
-	@Override
-	public SourceHandler apply(SourceDef definition) {
-		
-		return SourcePathHandler.sourcePath(JsonPath.compile(definition.getPath()));
-	}
+    @Override
+    public SourceHandler apply(SourceDef definition) {
+
+        return SourcePathHandler.sourcePath(JsonPath.compile(definition.getPath()));
+    }
 
 }

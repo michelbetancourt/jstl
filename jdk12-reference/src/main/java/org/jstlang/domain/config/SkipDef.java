@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SkipDef {
 
-	@Builder.Default
-	private boolean ifEmpty = true;
-	@Builder.Default
-	private boolean ifNull = true;
+    @Builder.Default
+    private boolean ifEmpty = true;
+    @Builder.Default
+    private boolean ifNull = true;
 
 }

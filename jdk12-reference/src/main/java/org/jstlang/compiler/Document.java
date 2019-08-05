@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 public class Document {
 
-	private final DocumentContext sourceObject;
-	private final DocumentContext targetObject;
-	
+    private final DocumentContext sourceObject;
+    private final DocumentContext targetObject;
+
 }

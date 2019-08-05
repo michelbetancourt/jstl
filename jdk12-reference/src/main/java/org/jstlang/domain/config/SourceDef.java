@@ -14,16 +14,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SourceDef {
 
-	private String value;
-	private String path;
-	
-	private List<String> values;
-	private String joiner;
-	
-	
-	private List<String> findFirst;
-	private List<String> findLast;
-	
-	private String defaultValue;
-	
+    private String value;
+    private String path;
+
+    private List<String> values;
+    private String joiner;
+
+    private List<String> findFirst;
+    private List<String> findLast;
+
+    private String defaultValue;
+
 }

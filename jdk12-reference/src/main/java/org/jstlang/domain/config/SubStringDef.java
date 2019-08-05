@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SubStringDef {
 
-	private Integer startIndex;
-	private Integer endIndex;
+    private Integer startIndex;
+    private Integer endIndex;
 }

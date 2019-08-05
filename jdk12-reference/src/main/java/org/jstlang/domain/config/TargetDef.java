@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TargetDef {
 
-	private String path;
-	private Class<?> type;
-	
-	@Builder.Default
-	private SkipDef skip = SkipDef.builder().build();
+    private String path;
+    private Class<?> type;
+
+    @Builder.Default
+    private SkipDef skip = SkipDef.builder().build();
 
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StringDef {
 
-	private StringCaseDef applyCase;
-	private SubStringDef subString;
-	private CharPaddingDef charPadding;
+    private StringCaseDef applyCase;
+    private SubStringDef subString;
+    private CharPaddingDef charPadding;
 }

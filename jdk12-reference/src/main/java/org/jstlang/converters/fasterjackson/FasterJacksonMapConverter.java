@@ -13,16 +13,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "typeConverter")
 public class FasterJacksonMapConverter implements Function<Object, Map<String, Object>> {
-	
-	static JavaType mapType = FasterJacksonObjectConverter.defaultMapper.getTypeFactory().constructMapType(LinkedHashMap.class,
-			String.class, Object.class);
-	
-	private @Nonnull ObjectMapper mapper = FasterJacksonObjectConverter.defaultMapper;
-	
-	@Override
-	public Map<String, Object> apply(Object value) {
-		
-		return mapper.convertValue(value, mapType);
-	}
-	
+
+    static JavaType mapType = FasterJacksonObjectConverter.defaultMapper.getTypeFactory()
+            .constructMapType(LinkedHashMap.class, String.class, Object.class);
+
+    private @Nonnull ObjectMapper mapper = FasterJacksonObjectConverter.defaultMapper;
+
+    @Override
+    public Map<String, Object> apply(Object value) {
+
+        return mapper.convertValue(value, mapType);
+    }
+
 }

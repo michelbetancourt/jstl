@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ObjectDef {
 
-	private List<PathDef> paths;
-	private Class<?> targetType;
+    private List<PathDef> paths;
+    private Class<?> targetType;
 }
