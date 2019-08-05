@@ -1,4 +1,4 @@
-package org.jstlang.compiler.step;
+package org.jstlang.compiler.step.handler;
 
 import lombok.RequiredArgsConstructor;
 
