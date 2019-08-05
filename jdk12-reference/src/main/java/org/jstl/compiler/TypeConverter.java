@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class TypeConverter implements Function<Object, Object> {
 	
 	private static final ObjectMapper mapper = new ObjectMapper(); 
+	
 	static {
 		mapper.registerModule(new AfterburnerModule());
 		mapper.registerModule(new JavaTimeModule());

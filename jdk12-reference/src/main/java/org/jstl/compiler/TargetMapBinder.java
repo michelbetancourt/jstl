@@ -17,25 +17,28 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
+@Setter
 @Accessors(fluent = true)
 @RequiredArgsConstructor(staticName = "defaultBinder")
 @Slf4j
-public class TargetMapBinder implements Function<Map<String, Object>, Map<String, Object>> {
+public class TargetMapBinder implements Function<Object, Object> {
 	
 	private @Nonnull Consumer<Document> binder;
 	
 	private @Nonnull Configuration jsonConfig = Configuration.builder()
 			.options(DEFAULT_PATH_LEAF_TO_NULL, SUPPRESS_EXCEPTIONS)
 			.build();
+	
 	private int totalBindings = -1;
 	
-	
+	private @Nonnull TypeConverter typeConverter = TypeConverter.typeConverter(null);
 
 	@Override
-	public Map<String, Object> apply(Map<String, Object> sourceObject) {
+	public Object apply(Object sourceObject) {
 		
 		log.debug("About to start binding,totalBindings={}", totalBindings);
 		Stopwatch timer = Stopwatch.start();
@@ -57,7 +60,8 @@ public class TargetMapBinder implements Function<Map<String, Object>, Map<String
 		log.info("Done processing bindings,totalBindings={},targetMapKeySize={},durationMillis={}", totalBindings, targetMap.keySet().size(), timer.elapsedMillis());
 		
 		
-		return targetMap;
+		return typeConverter
+				.apply(targetMap);
 	}
 
 }

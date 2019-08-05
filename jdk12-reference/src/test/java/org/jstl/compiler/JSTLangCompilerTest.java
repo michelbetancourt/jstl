@@ -1,14 +1,17 @@
 package org.jstl.compiler;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.instanceOf;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.jstl.domain.config.JSTLObject;
+import org.jstl.domain.config.JSTLPath;
 import org.jstl.domain.config.JSTLSource;
 import org.jstl.domain.config.JSTLTarget;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,11 +19,13 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.jayway.jsonpath.JsonPath;
 
-class JSTLCompilerTest {
+class JSTLangCompilerTest {
 
-	private List<JSTLObject> mappings;
-	private JSTLCompiler compiler;
+	private JSTLObject objectDef;
+	private List<JSTLPath> pathDefs;
+	private JSTLangCompiler compiler;
 	private Map<String, Object> sourceValues;
 	private Map<String, Object> nestedValues;
 	private Map<String, Object> targetValues;
@@ -29,8 +34,12 @@ class JSTLCompilerTest {
 	@BeforeEach
 	public void beforeEach() {
 		
-		mappings = Lists.newArrayList();
-		mappings.add(JSTLObject.builder()
+		objectDef = new JSTLObject();
+		
+		pathDefs = Lists.newArrayList();
+		objectDef.setPaths(pathDefs);
+		
+		pathDefs.add(JSTLPath.builder()
 				.source(JSTLSource.builder()
 						.path("$.key")
 						.build())
@@ -38,7 +47,7 @@ class JSTLCompilerTest {
 						.path("$.newKey")
 						.build())
 				.build());
-		mappings.add(JSTLObject.builder()
+		pathDefs.add(JSTLPath.builder()
 				.source(JSTLSource.builder()
 						.path("$.nested.key")
 						.build())
@@ -47,7 +56,7 @@ class JSTLCompilerTest {
 						.build())
 				.build());
 		
-		compiler = JSTLCompiler.jstlCompiler(mappings);
+		compiler = JSTLangCompiler.newInstance();
 		
 		sourceValues = Maps.newLinkedHashMap();
 		sourceValues.put("key", "123");
@@ -62,14 +71,18 @@ class JSTLCompilerTest {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	void testCompile() {
-		Function<Map<String, Object>, Map<String, Object>> compiled = compiler.compile();
-		targetValues = compiled.apply(sourceValues);
+		Function<Object, Object> compiled = compiler.compile(objectDef);
+		Object actual = compiled.apply(sourceValues);
+		
+		assertThat(actual, instanceOf(Map.class));
+		targetValues = (Map<String, Object>) actual;
 		
 		assertThat(targetValues, hasEntry("newKey", "123"));
 		assertThat(targetValues, hasKey("nested"));
-		
+		assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
 		
 	}
 

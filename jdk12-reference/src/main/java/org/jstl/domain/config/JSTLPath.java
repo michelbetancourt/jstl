@@ -12,8 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class JSTLObject {
+public class JSTLPath {
 
-	private List<JSTLPath> paths;
-	private Class<?> targetType;
+	private JSTLSource source;
+	private JSTLTarget target;
+	
+	@Builder.Default
+	private JSTLValueSource sourceIs = JSTLValueSource.source;
+	
+	private List<JSTLStep> steps;
+	
 }
+ 

@@ -2,7 +2,6 @@ package org.jstl.compiler;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -16,26 +15,27 @@ import org.jstl.compiler.step.StepHandlerFactory;
 import org.jstl.compiler.target.TargetHandler;
 import org.jstl.compiler.target.TargetHandlerFactory;
 import org.jstl.domain.config.JSTLObject;
+import org.jstl.domain.config.JSTLPath;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor(staticName = "jstlCompiler")
+@RequiredArgsConstructor(staticName = "newInstance")
 @Setter
 @Accessors(fluent = true)
 @Slf4j
-public class JSTLCompiler {
+public class JSTLangCompiler {
 
-	private final @Nonnull List<JSTLObject> definitions;
-	
 	private @Nonnull SourceHandlerFactory sourceHandlerFactory = SourceHandlerFactory.defaultHandler();
 	private @Nonnull StepHandlerFactory stepHandlerFactory = StepHandlerFactory.defaultHandler();
 	private @Nonnull TargetHandlerFactory targetHandlerFactory = TargetHandlerFactory.defaultHandler();
 	
 	
-	public Function<Map<String, Object>, Map<String, Object>> compile() {
+	public Function<Object, Object> compile(@Nonnull JSTLObject jstlObject) {
+		
+		List<JSTLPath> definitions = jstlObject.getPaths();
 		
 		if(definitions.isEmpty()) {
 			throw new IllegalArgumentException("No mappings to compile!");
@@ -45,12 +45,12 @@ public class JSTLCompiler {
 			log.debug("Starting conversion,sourceDocument={},targetDocument={}", doc.getSourceObject(), doc.getTargetObject());
 		};
 		
-		Iterator<JSTLObject> it = definitions.stream()
+		Iterator<JSTLPath> it = definitions.stream()
 				.filter(Objects::nonNull)
 				.iterator();
 		
 		while(it.hasNext()) {
-			JSTLObject definition = it.next();
+			JSTLPath definition = it.next();
 			SourceHandler sourceHandler = sourceHandlerFactory.apply(definition.getSource());
 		    StepHandler stepHandler = stepHandlerFactory.apply(definition.getSteps());
 			TargetHandler targetHandler = targetHandlerFactory.apply(definition.getTarget());
