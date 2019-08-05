@@ -14,6 +14,7 @@ public class StepDef {
 
     private IterableDef iterable;
     private NumberDef number;
+    private StringDef string;
 
     @Builder.Default
     private SkipDef skip = SkipDef.builder().build();
