@@ -29,6 +29,7 @@ public class TargetPathHandler implements TargetHandler {
 	private final @Nonnull TypeConverter typeConverter;
 
 	private JsonPath splitPath = null;
+	private String lastKey = null;
 	private @Nonnull JsonPath rootPath = JsonPath.compile("$");
 	
 	public static TargetPathHandler targetPath(@Nonnull String targetPathString, @Nonnull TypeConverter typeConverter) {
@@ -36,16 +37,19 @@ public class TargetPathHandler implements TargetHandler {
 		JsonPath targetPath = JsonPath.compile(targetPathString);
 		
 		JsonPath splitPath = null;
-		if(splitPaths.size() > 2) {
+		String last = null;
+		if(splitPaths.size() > 1) {
 			
-			splitPath = JsonPath.compile("$." + Iterables.getLast(splitPaths));
+			last = Iterables.getLast(splitPaths);
+			splitPath = JsonPath.compile("$." + last);
+			splitPaths.remove(splitPaths.size() - 1);
 		}
 
-		return new TargetPathHandler(targetPath, splitPaths, typeConverter).splitPath(splitPath);
+		return new TargetPathHandler(targetPath, splitPaths, typeConverter).splitPath(splitPath).lastKey(last);
 	}
 	
 	static List<String> splitPaths(String path) {
-		return Arrays.stream(path.split("[\\.\\$]]"))
+		return Arrays.stream(path.split("[\\.\\$]"))
 				.filter(Objects::nonNull)
 				.filter(val -> !val.isBlank())
 				.collect(Collectors.toList());
@@ -70,6 +74,7 @@ public class TargetPathHandler implements TargetHandler {
 		
 		Object nextValue = null;
 		for(String path : splitPaths) {
+			nextValue = root.get(path);
 			if(null == nextValue) {
 				Map<String, Object> newRoot = Maps.newLinkedHashMap();
 				root.put(path, newRoot);
@@ -79,8 +84,7 @@ public class TargetPathHandler implements TargetHandler {
 			}
 		}
 		
-		targetObject.set(splitPath, root);
-		
+		root.put(lastKey, theValue);
 		
 	}
 

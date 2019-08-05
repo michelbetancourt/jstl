@@ -16,8 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 
 class JSTLCompilerTest {
 
@@ -72,21 +70,7 @@ class JSTLCompilerTest {
 		assertThat(targetValues, hasEntry("newKey", "123"));
 		assertThat(targetValues, hasKey("nested"));
 		
-		System.out.println("####");
-		System.out.println(targetValues);
-		System.out.println("####");
 		
-		
-	}
-	
-	@Test
-	void testBlah() {
-		DocumentContext c = JsonPath.parse(targetValues);
-		targetValues.put("nested", Maps.newLinkedHashMap());
-//		c.put("$.nested", "newKey", 123);
-		c.set("$.nested.newKey", 123);
-		System.out.println(targetValues);
-		System.out.println(JsonPath.compile("$.nested.newKey"));
 	}
 
 }
