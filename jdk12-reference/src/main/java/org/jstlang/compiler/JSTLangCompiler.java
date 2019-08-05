@@ -19,6 +19,7 @@ import org.jstlang.compiler.target.TargetHandlerFactory;
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
 import org.jstlang.domain.config.ObjectDef;
 import org.jstlang.domain.config.PathDef;
+import org.jstlang.domain.config.StepDef;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -50,16 +51,22 @@ public class JSTLangCompiler {
         };
 
         Iterator<PathDef> it = pathDefs.stream().filter(Objects::nonNull).iterator();
-
+        int totalBindings = 0;
         while (it.hasNext()) {
+            totalBindings++;
             PathDef pathDef = it.next();
             SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef.getSource());
-            StepHandler stepHandler = stepHandlerFactory.apply(pathDef.getSteps());
+            List<StepDef> steps = Optional.ofNullable(pathDef)
+                    .map(PathDef::getSteps)
+                    .orElse(Collections.emptyList());
+            totalBindings += steps.size();
+            StepHandler stepHandler = stepHandlerFactory.apply(steps);
             TargetHandler targetHandler = targetHandlerFactory.apply(pathDef.getTarget());
             func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
         }
 
         return TargetObjectBinder.defaultBinder(func)
+                .totalBindings(totalBindings)
                 .targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getTargetType()));
     }
 }
