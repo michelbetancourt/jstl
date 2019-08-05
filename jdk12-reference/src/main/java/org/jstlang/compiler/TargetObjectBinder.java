@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TargetObjectBinder implements Function<Object, Object> {
 
-    private @Nonnull Consumer<Document> binder;
+    private @Nonnull Consumer<Documents> binder;
 
     private @Nonnull Configuration jsonConfig = Configuration.builder()
             .options(DEFAULT_PATH_LEAF_TO_NULL, SUPPRESS_EXCEPTIONS).build();
@@ -50,7 +50,7 @@ public class TargetObjectBinder implements Function<Object, Object> {
             DocumentContext read = JsonPath.parse(sourceMap, jsonConfig);
             DocumentContext write = JsonPath.parse(targetMap, jsonConfig);
 
-            binder.accept(Document.builder().sourceObject(read).targetObject(write).build());
+            binder.accept(Documents.builder().sourceObject(read).targetObject(write).build());
             targetObject = targetConverter.apply(targetMap);
         } catch (RuntimeException e) {
             log.error("Error caught during source to target bindings,totalBindings={},durationMillis={}", totalBindings,

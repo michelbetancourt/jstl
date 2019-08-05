@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Document {
+public class Documents {
 
     private final DocumentContext sourceObject;
     private final DocumentContext targetObject;

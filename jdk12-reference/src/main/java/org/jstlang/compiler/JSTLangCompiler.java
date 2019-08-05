@@ -44,7 +44,7 @@ public class JSTLangCompiler {
             throw new IllegalArgumentException("No mappings to compile!");
         }
 
-        Consumer<Document> func = doc -> {
+        Consumer<Documents> func = doc -> {
             log.info("Starting conversion");
             log.debug("Starting conversion,sourceDocument={},targetDocument={}", doc.getSourceObject(),
                     doc.getTargetObject());

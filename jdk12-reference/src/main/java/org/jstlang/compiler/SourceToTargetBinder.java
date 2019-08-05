@@ -11,14 +11,14 @@ import org.jstlang.compiler.target.TargetHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "binder")
-class SourceToTargetBinder implements Consumer<Document> {
+class SourceToTargetBinder implements Consumer<Documents> {
 
     private @Nonnull SourceHandler sourceHandler;
     private @Nonnull Function<Object, Object> stepHandler;
     private @Nonnull TargetHandler targetHandler;
 
     @Override
-    public void accept(Document context) {
+    public void accept(Documents context) {
 
         final Object sourceValue = sourceHandler.apply(context.getSourceObject());
 
