@@ -1,4 +1,4 @@
-package org.jstlang.domain.definition;
+package org.jstlang.domain.definition.step;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SubStringDef {
+public class CharPaddingDef {
 
-    private Integer startIndex;
-    private Integer endIndex;
+    private Character left;
+    private Character right;
+    private Integer limit;
+
 }

@@ -1,4 +1,6 @@
-package org.jstlang.domain.definition;
+package org.jstlang.domain.definition.step;
+
+import org.jstlang.domain.definition.PathDef;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,9 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class StringDef {
+public class IterableDef {
 
-    private StringCaseDef casing;
-    private SubStringDef subString;
-    private CharPaddingDef charPadding;
+    private PathDef entries;
+
 }

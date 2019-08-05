@@ -2,6 +2,8 @@ package org.jstlang.domain.definition;
 
 import java.util.List;
 
+import org.jstlang.domain.definition.step.StepDef;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

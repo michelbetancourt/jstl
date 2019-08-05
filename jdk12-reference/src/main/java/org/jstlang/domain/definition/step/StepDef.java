@@ -1,4 +1,6 @@
-package org.jstlang.domain.definition;
+package org.jstlang.domain.definition.step;
+
+import org.jstlang.domain.definition.SkipDef;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

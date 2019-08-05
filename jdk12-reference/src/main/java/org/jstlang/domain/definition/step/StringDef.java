@@ -1,4 +1,4 @@
-package org.jstlang.domain.definition;
+package org.jstlang.domain.definition.step;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CharPaddingDef {
+public class StringDef {
 
-    private Character left;
-    private Character right;
-    private Integer limit;
-
+    private StringCaseDef casing;
+    private SubStringDef subString;
+    private CharPaddingDef charPadding;
 }

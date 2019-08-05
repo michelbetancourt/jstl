@@ -1,4 +1,4 @@
-package org.jstlang.domain.definition;
+package org.jstlang.domain.definition.step;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class NumberDef {
+public class SubStringDef {
 
-    @Builder.Default
-    private boolean abs = false;
-    @Builder.Default
-    private boolean toggleSign = false;
-
+    private Integer startIndex;
+    private Integer endIndex;
 }

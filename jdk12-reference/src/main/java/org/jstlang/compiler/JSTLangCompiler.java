@@ -19,7 +19,7 @@ import org.jstlang.compiler.target.TargetHandlerFactory;
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
 import org.jstlang.domain.definition.ObjectDef;
 import org.jstlang.domain.definition.PathDef;
-import org.jstlang.domain.definition.StepDef;
+import org.jstlang.domain.definition.step.StepDef;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package org.jstlang.domain.definition;
+package org.jstlang.domain.definition.step;
 
 public enum StringCaseDef {
 
