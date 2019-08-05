@@ -1,6 +1,4 @@
-package org.jstlang.domain.config;
-
-import java.util.List;
+package org.jstlang.domain.definition;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ObjectDef {
+public class CharPaddingDef {
 
-    private List<PathDef> paths;
-    private Class<?> targetType;
+    private Character left;
+    private Character right;
+    private Integer limit;
+
 }

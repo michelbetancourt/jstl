@@ -2,7 +2,7 @@ package org.jstlang.compiler.source;
 
 import java.util.function.Function;
 
-import org.jstlang.domain.config.SourceDef;
+import org.jstlang.domain.definition.SourceDef;
 
 import com.jayway.jsonpath.JsonPath;
 

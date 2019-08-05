@@ -3,7 +3,7 @@ package org.jstlang.compiler.target;
 import java.util.function.Function;
 
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
-import org.jstlang.domain.config.TargetDef;
+import org.jstlang.domain.definition.TargetDef;
 
 import lombok.RequiredArgsConstructor;
 

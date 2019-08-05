@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import org.jstlang.domain.config.StepDef;
+import org.jstlang.domain.definition.StepDef;
 
 import lombok.RequiredArgsConstructor;
 

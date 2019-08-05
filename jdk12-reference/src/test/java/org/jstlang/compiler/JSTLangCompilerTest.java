@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.jstlang.compiler.JSTLangCompiler;
-import org.jstlang.domain.config.ObjectDef;
-import org.jstlang.domain.config.PathDef;
-import org.jstlang.domain.config.SourceDef;
-import org.jstlang.domain.config.TargetDef;
+import org.jstlang.domain.definition.ObjectDef;
+import org.jstlang.domain.definition.PathDef;
+import org.jstlang.domain.definition.SourceDef;
+import org.jstlang.domain.definition.TargetDef;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

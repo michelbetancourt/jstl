@@ -1,4 +1,6 @@
-package org.jstlang.domain.config;
+package org.jstlang.domain.definition;
+
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,12 +12,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class StepDef {
+public class PathDef {
 
-    private IterableDef iterable;
-    private NumberDef number;
+    private SourceDef source;
+    private TargetDef target;
 
     @Builder.Default
-    private SkipDef skip = SkipDef.builder().build();
+    private ValueSourceDef sourceIs = ValueSourceDef.source;
+
+    private List<StepDef> steps;
 
 }

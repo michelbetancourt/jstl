@@ -1,4 +1,6 @@
-package org.jstlang.domain.config;
+package org.jstlang.domain.definition;
+
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,12 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TargetDef {
+public class ObjectDef {
 
-    private String path;
-    private Class<?> type;
-
-    @Builder.Default
-    private SkipDef skip = SkipDef.builder().build();
-
+    private List<PathDef> paths;
+    private Class<?> targetType;
 }

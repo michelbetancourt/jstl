@@ -1,4 +1,4 @@
-package org.jstlang.domain.config;
+package org.jstlang.domain.definition;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class IterableDef {
+public class NumberDef {
 
-    private PathDef entries;
+    @Builder.Default
+    private boolean abs = false;
+    @Builder.Default
+    private boolean toggleSign = false;
 
 }

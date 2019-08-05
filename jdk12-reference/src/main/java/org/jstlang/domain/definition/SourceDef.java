@@ -1,4 +1,4 @@
-package org.jstlang.domain.config;
+package org.jstlang.domain.definition;
 
 import java.util.List;
 

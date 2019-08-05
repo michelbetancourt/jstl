@@ -1,4 +1,4 @@
-package org.jstlang.domain.config;
+package org.jstlang.domain.definition;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SkipDef {
+public class IterableDef {
 
-    @Builder.Default
-    private boolean ifEmpty = true;
-    @Builder.Default
-    private boolean ifNull = true;
+    private PathDef entries;
 
 }
