@@ -1,13 +1,16 @@
 package org.jstlang.compiler;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import org.jstlang.compiler.converters.fasterjackson.FasterJacksonTypeConverter;
 import org.jstlang.compiler.source.SourceHandler;
 import org.jstlang.compiler.source.SourceHandlerFactory;
 import org.jstlang.compiler.step.StepHandler;
@@ -33,11 +36,12 @@ public class JSTLangCompiler {
 	private @Nonnull TargetHandlerFactory targetHandlerFactory = TargetHandlerFactory.defaultHandler();
 	
 	
-	public Function<Object, Object> compile(@Nonnull ObjectDef jstlObject) {
+	public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
 		
-		List<PathDef> definitions = jstlObject.getPaths();
+		List<PathDef> pathDef = Optional.ofNullable(objectDef.getPaths())
+				.orElse(Collections.emptyList());
 		
-		if(definitions.isEmpty()) {
+		if(pathDef.isEmpty()) {
 			throw new IllegalArgumentException("No mappings to compile!");
 		}
 		
@@ -45,7 +49,7 @@ public class JSTLangCompiler {
 			log.debug("Starting conversion,sourceDocument={},targetDocument={}", doc.getSourceObject(), doc.getTargetObject());
 		};
 		
-		Iterator<PathDef> it = definitions.stream()
+		Iterator<PathDef> it = pathDef.stream()
 				.filter(Objects::nonNull)
 				.iterator();
 		
@@ -57,6 +61,7 @@ public class JSTLangCompiler {
 			func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
 		}
 		
-		return TargetMapBinder.defaultBinder(func);
+		return TargetMapBinder.defaultBinder(func)
+				.typeConverter(FasterJacksonTypeConverter.typeConverter(objectDef.getTargetType()));
 	}
 }

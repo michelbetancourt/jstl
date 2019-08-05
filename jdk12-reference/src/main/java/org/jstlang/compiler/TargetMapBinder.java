@@ -35,7 +35,7 @@ public class TargetMapBinder implements Function<Object, Object> {
 	
 	private int totalBindings = -1;
 	
-	private @Nonnull TypeConverter typeConverter = TypeConverter.typeConverter(null);
+	private @Nonnull Function<Object, Object> typeConverter = Function.identity();
 
 	@Override
 	public Object apply(Object sourceObject) {

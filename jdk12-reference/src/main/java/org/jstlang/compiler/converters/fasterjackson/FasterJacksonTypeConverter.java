@@ -1,4 +1,4 @@
-package org.jstlang.compiler;
+package org.jstlang.compiler.converters.fasterjackson;
 
 import java.util.function.Function;
 
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "typeConverter")
-public class TypeConverter implements Function<Object, Object> {
+public class FasterJacksonTypeConverter implements Function<Object, Object> {
 	
 	private static final ObjectMapper mapper = new ObjectMapper(); 
 	
@@ -39,5 +39,5 @@ public class TypeConverter implements Function<Object, Object> {
 		
 		return mapper.convertValue(value, desiredType);
 	}
-
+	
 }

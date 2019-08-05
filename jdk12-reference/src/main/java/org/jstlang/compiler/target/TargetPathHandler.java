@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-
-import org.jstlang.compiler.TypeConverter;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -26,13 +25,14 @@ public class TargetPathHandler implements TargetHandler {
 
 	private final @Nonnull JsonPath targetPath;
 	private final @Nonnull List<String> splitPaths;
-	private final @Nonnull TypeConverter typeConverter;
+	
+	private @Nonnull Function<Object, Object> typeConverter = Function.identity();
 
 	private JsonPath splitPath = null;
 	private String lastKey = null;
 	private @Nonnull JsonPath rootPath = JsonPath.compile("$");
 	
-	public static TargetPathHandler targetPath(@Nonnull String targetPathString, @Nonnull TypeConverter typeConverter) {
+	public static TargetPathHandler targetPath(@Nonnull String targetPathString) {
 		List<String> splitPaths = splitPaths(targetPathString);
 		JsonPath targetPath = JsonPath.compile(targetPathString);
 		
@@ -45,7 +45,7 @@ public class TargetPathHandler implements TargetHandler {
 			splitPaths.remove(splitPaths.size() - 1);
 		}
 
-		return new TargetPathHandler(targetPath, splitPaths, typeConverter).splitPath(splitPath).lastKey(last);
+		return new TargetPathHandler(targetPath, splitPaths).splitPath(splitPath).lastKey(last);
 	}
 	
 	static List<String> splitPaths(String path) {
