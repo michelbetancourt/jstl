@@ -2,7 +2,7 @@ package org.jstlang.compiler.target;
 
 import java.util.function.Function;
 
-import org.jstlang.compiler.converters.fasterjackson.FasterJacksonTypeConverter;
+import org.jstlang.converters.fasterjackson.FasterJacksonTypeConverter;
 import org.jstlang.domain.config.TargetDef;
 
 import lombok.RequiredArgsConstructor;

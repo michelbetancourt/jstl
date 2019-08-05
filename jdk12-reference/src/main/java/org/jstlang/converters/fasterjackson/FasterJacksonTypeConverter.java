@@ -1,4 +1,4 @@
-package org.jstlang.compiler.converters.fasterjackson;
+package org.jstlang.converters.fasterjackson;
 
 import java.util.function.Function;
 
