@@ -50,7 +50,7 @@ public class StepAggregateFactory implements Function<List<StepDef>,  Function<O
             return val;
         });
         
-        return null;
+        return handler;
     }
 
 }
