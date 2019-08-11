@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class NumberDef {
 
-    @Builder.Default
-    private boolean abs = false;
-    @Builder.Default
-    private boolean toggleSign = false;
+    private Boolean abs;
+    private Boolean toggleSign;
 
 }

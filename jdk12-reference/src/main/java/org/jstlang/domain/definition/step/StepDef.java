@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StepDef {
 
-    private StringDef string;
+    private StringCaseDef stringCase;
+    private SubStringDef subString;
+    private CharPaddingDef charPadding;
     private NumberDef number;
     private IterableDef iterable;
     
