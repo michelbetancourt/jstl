@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
+import lombok.Data;
+
+@Data
 public class ExtObject {
 
     @JsonIgnore
@@ -19,8 +22,12 @@ public class ExtObject {
     }
 
     @JsonAnySetter
-    public void setData(String name, Object value) {
-        this.data.put(name, value);
+    public void setData(String key, Object value) {
+        this.data.put(key, value);
+    }
+    
+    public Object removeData(String key) {
+        return this.data.remove(key);
     }
     
     public int size() {
