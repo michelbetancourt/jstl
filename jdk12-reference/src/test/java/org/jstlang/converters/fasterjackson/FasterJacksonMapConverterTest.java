@@ -6,7 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Map;
 
-import org.jstlang.util.ExtObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +13,11 @@ import com.google.common.collect.Maps;
 
 import lombok.Data;
 
-class FasterJacksonExtObjectConverterTest {
+class FasterJacksonMapConverterTest {
 
     private MyObject myObject;
     private Map<String, Object> map;
-    private FasterJacksonExtObjectConverter converter;
+    private FasterJacksonMapConverter converter;
     
     @BeforeEach
     public void before() {
@@ -29,30 +28,27 @@ class FasterJacksonExtObjectConverterTest {
         map = Maps.newLinkedHashMap();
         map.put("number", 432.1D);
         map.put("string", "432.1D");
-        converter = FasterJacksonExtObjectConverter.typeConverter();
+        converter = FasterJacksonMapConverter.typeConverter();
 
     }
     
     @Test
     void testConvert_CustomObject() {
-        ExtObject actual = converter.apply(myObject);
+        Map<String, Object> actual = converter.apply(myObject);
         assertThat(actual, is(notNullValue()));
-        assertThat(actual.any(), is(true));
-        assertThat(actual.many(), is(true));
         assertThat(actual.size(), is(2));
-        assertThat(actual.getData().get("number"), is(123.4D));
-        assertThat(actual.getData().get("string"), is("123.4D"));
+        assertThat(actual.get("number"), is(123.4D));
+        assertThat(actual.get("string"), is("123.4D"));
     }
     
     @Test
     void testConvert_Map() {
-        ExtObject actual = converter.apply(map);
+        Map<String, Object> actual = converter.apply(map);
         assertThat(actual, is(notNullValue()));
-        assertThat(actual.any(), is(true));
-        assertThat(actual.many(), is(true));
         assertThat(actual.size(), is(2));
-        assertThat(actual.getData().get("number"), is(432.1D));
-        assertThat(actual.getData().get("string"), is("432.1D"));
+        assertThat(actual.get("number"), is(432.1D));
+        assertThat(actual.get("string"), is("432.1D"));
+        assertThat(actual, is(map));
     }
     
     @Data
