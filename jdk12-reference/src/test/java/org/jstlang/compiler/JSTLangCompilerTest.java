@@ -69,6 +69,17 @@ class JSTLangCompilerTest {
                                              .path("$.upperKey")
                                              .build())
                             .build());
+        pathDefs.add(PathDef.builder()
+                            .source(SourceDef.builder()
+                                             .path("$.stringKey")
+                                             .build())
+                            .steps(Collections.singletonList(StepDef.builder()
+                                                                    .stringCase(StringCaseDef.lower)
+                                                                    .build()))
+                            .target(TargetDef.builder()
+                                             .path("$.lowerKey")
+                                             .build())
+                            .build());
 
         compiler = JSTLangCompiler.newInstance();
 
@@ -100,6 +111,7 @@ class JSTLangCompilerTest {
         assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
 
         assertThat(targetValues, hasEntry("upperKey", "ABCDEF"));
+        assertThat(targetValues, hasEntry("lowerKey", "abcdef"));
         
         // finally verify key not read is skipped
         assertThat(targetValues, not(hasKey("keyNotRead")));
