@@ -61,6 +61,7 @@ public class StepAggregateFactory implements Function<List<StepDef>,  Function<O
                 .get();
             String property = entry.getKey();
             log.debug("Found step for,property={}", property);
+            log.trace("Found step for,property={},value={}", property, entry.getValue());
             Function<StepDef, StepHandler> stepFactory = stepMappings.get(property);
             if(null == stepFactory) {
                 log.debug("No plugin found for step,property={}", property);
