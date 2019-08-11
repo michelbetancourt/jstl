@@ -12,8 +12,7 @@ import javax.annotation.Nonnull;
 
 import org.jstlang.compiler.source.SourceHandler;
 import org.jstlang.compiler.source.SourceHandlerFactory;
-import org.jstlang.compiler.step.StepHandler;
-import org.jstlang.compiler.step.StepHandlerFactory;
+import org.jstlang.compiler.step.StepAggregateFactory;
 import org.jstlang.compiler.target.TargetHandler;
 import org.jstlang.compiler.target.TargetHandlerFactory;
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
@@ -33,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JSTLangCompiler {
 
     private @Nonnull SourceHandlerFactory sourceHandlerFactory = SourceHandlerFactory.defaultHandler();
-    private @Nonnull StepHandlerFactory stepHandlerFactory = StepHandlerFactory.defaultHandler();
+    private @Nonnull StepAggregateFactory stepHandlerFactory = StepAggregateFactory.defaultHandler();
     private @Nonnull TargetHandlerFactory targetHandlerFactory = TargetHandlerFactory.defaultHandler();
 
     public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
@@ -60,7 +59,7 @@ public class JSTLangCompiler {
                     .map(PathDef::getSteps)
                     .orElse(Collections.emptyList());
             totalBindings += steps.size();
-            StepHandler stepHandler = stepHandlerFactory.apply(steps);
+            Function<Object, Object> stepHandler = stepHandlerFactory.apply(steps);
             TargetHandler targetHandler = targetHandlerFactory.apply(pathDef.getTarget());
             func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
         }

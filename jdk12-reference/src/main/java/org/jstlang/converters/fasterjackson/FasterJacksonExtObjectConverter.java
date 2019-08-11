@@ -4,6 +4,8 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import org.jstlang.util.ExtObject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -13,19 +15,14 @@ import lombok.experimental.Accessors;
 @RequiredArgsConstructor(staticName = "typeConverter")
 @Accessors(fluent = true)
 @Setter
-public class FasterJacksonObjectConverter implements Function<Object, Object> {
-
-    private final Class<?> desiredType;
+public class FasterJacksonExtObjectConverter implements Function<Object, ExtObject> {
 
     private @Nonnull ObjectMapper mapper = FasterJacksonDefaultMapper.instance;
 
     @Override
-    public Object apply(Object value) {
-        if (null == desiredType) {
-            return value;
-        }
+    public ExtObject apply(Object value) {
 
-        return mapper.convertValue(value, desiredType);
+        return mapper.convertValue(value, ExtObject.class);
     }
 
 }
