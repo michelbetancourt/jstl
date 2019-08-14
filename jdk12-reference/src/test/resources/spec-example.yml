@@ -1,0 +1,33 @@
+fieldPaths:
+ -
+  source:
+   path: $.key
+  target:
+   path: $.newKey
+ -
+  source:
+   path: $.nested.key
+  target:
+   path: $.nested.newKey
+ - 
+  source: 
+   path: $.passThroughKey
+ -
+  source:
+   path: $.stringKey
+  steps:
+   - 
+    stringCase: upper
+  target:
+   path: $.upperKey
+ -
+  source:
+   path: $.stringKey
+  steps:
+   - 
+    stringCase: upper
+  target:
+   path: $.lowerKey
+  
+outputType: org.jstlang.util.ExtObject
+ 

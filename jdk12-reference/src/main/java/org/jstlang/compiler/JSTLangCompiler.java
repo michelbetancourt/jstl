@@ -16,8 +16,8 @@ import org.jstlang.compiler.step.StepAggregateFactory;
 import org.jstlang.compiler.target.TargetHandler;
 import org.jstlang.compiler.target.TargetHandlerFactory;
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
+import org.jstlang.domain.definition.FieldPathDef;
 import org.jstlang.domain.definition.ObjectDef;
-import org.jstlang.domain.definition.PathDef;
 import org.jstlang.domain.definition.step.StepDef;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class JSTLangCompiler {
 
     public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
 
-        List<PathDef> pathDefs = Optional.ofNullable(objectDef.getPaths()).orElse(Collections.emptyList());
+        List<FieldPathDef> pathDefs = Optional.ofNullable(objectDef.getFieldPaths()).orElse(Collections.emptyList());
 
         if (pathDefs.isEmpty()) {
             throw new IllegalArgumentException("No mappings to compile!");
@@ -49,23 +49,24 @@ public class JSTLangCompiler {
                     doc.getTargetObject());
         };
 
-        Iterator<PathDef> it = pathDefs.stream().filter(Objects::nonNull).iterator();
+        Iterator<FieldPathDef> it = pathDefs.stream().filter(Objects::nonNull).iterator();
         int totalBindings = 0;
         while (it.hasNext()) {
             totalBindings++;
-            PathDef pathDef = it.next();
+            FieldPathDef pathDef = it.next();
             SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef.getSource());
             List<StepDef> steps = Optional.ofNullable(pathDef)
-                    .map(PathDef::getSteps)
+                    .map(FieldPathDef::getSteps)
                     .orElse(Collections.emptyList());
             totalBindings += steps.size();
             Function<Object, Object> stepHandler = stepHandlerFactory.apply(steps);
+            // TODO make update to include source when target is not set
             TargetHandler targetHandler = targetHandlerFactory.apply(pathDef.getTarget());
             func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
         }
 
         return TargetObjectBinder.defaultBinder(func)
                 .totalBindings(totalBindings)
-                .targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getTargetType()));
+                .targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getOutputType()));
     }
 }

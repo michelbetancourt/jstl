@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PathDef {
+public class FieldPathDef {
 
     private SourceDef source;
     private TargetDef target;

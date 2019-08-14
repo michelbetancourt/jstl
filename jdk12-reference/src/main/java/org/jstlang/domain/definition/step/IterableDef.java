@@ -1,6 +1,6 @@
 package org.jstlang.domain.definition.step;
 
-import org.jstlang.domain.definition.PathDef;
+import org.jstlang.domain.definition.FieldPathDef;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class IterableDef {
 
-    private PathDef entries;
+    private FieldPathDef entries;
 
 }
