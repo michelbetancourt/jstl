@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.jstlang.converters.fasterjackson.FasterJacksonSpecificObjectReader;
-import org.jstlang.domain.definition.ObjectDef;
 import org.jstlang.domain.definition.FieldPathDef;
+import org.jstlang.domain.definition.ObjectDef;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -63,50 +63,6 @@ class JSTLangCompilerTest {
         testResource = Resources.getResource("spec-example.yml");
         
         objectDef = objectDefConverter.apply(Resources.toString(testResource, Charsets.UTF_8));
-
-//        objectDef = new ObjectDef();
-//
-//        pathDefs = Lists.newArrayList();
-//        objectDef.setFieldPaths(pathDefs);
-//
-//        pathDefs.add(PathDef.builder()
-//                            .source(SourceDef.builder()
-//                                             .path("$.key")
-//                                             .build())
-//                            .target(TargetDef.builder()
-//                                             .path("$.newKey")
-//                                             .build())
-//                            .build());
-//        pathDefs.add(PathDef.builder()
-//                            .source(SourceDef.builder()
-//                                             .path("$.nested.key")
-//                                             .build())
-//                            .target(TargetDef.builder()
-//                                             .path("$.nested.newKey")
-//                                             .build())
-//                            .build());
-//        pathDefs.add(PathDef.builder()
-//                            .source(SourceDef.builder()
-//                                             .path("$.stringKey")
-//                                             .build())
-//                            .steps(Collections.singletonList(StepDef.builder()
-//                                                                    .stringCase(StringCaseDef.upper)
-//                                                                    .build()))
-//                            .target(TargetDef.builder()
-//                                             .path("$.upperKey")
-//                                             .build())
-//                            .build());
-//        pathDefs.add(PathDef.builder()
-//                            .source(SourceDef.builder()
-//                                             .path("$.stringKey")
-//                                             .build())
-//                            .steps(Collections.singletonList(StepDef.builder()
-//                                                                    .stringCase(StringCaseDef.lower)
-//                                                                    .build()))
-//                            .target(TargetDef.builder()
-//                                             .path("$.lowerKey")
-//                                             .build())
-//                            .build());
 
         compiler = JSTLangCompiler.newInstance();
 
