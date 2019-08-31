@@ -15,6 +15,7 @@ import java.util.function.Function;
 import org.jstlang.converters.fasterjackson.FasterJacksonSpecificObjectReader;
 import org.jstlang.domain.definition.FieldPathDef;
 import org.jstlang.domain.definition.ObjectDef;
+import org.jstlang.util.ExtObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -80,14 +81,13 @@ class JSTLangCompilerTest {
 
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void testCompile() {
         Function<Object, Object> compiled = compiler.compile(objectDef);
         Object actual = compiled.apply(sourceValues);
 
-        assertThat(actual, instanceOf(Map.class));
-        targetValues = (Map<String, Object>) actual;
+        assertThat(actual, instanceOf(ExtObject.class));
+        targetValues = ((ExtObject)actual).getData();
 
         assertThat(targetValues, hasEntry("newKey", "123"));
         assertThat(targetValues, hasKey("nested"));

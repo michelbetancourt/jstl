@@ -25,7 +25,7 @@ fieldPaths:
    path: $.stringKey
   steps:
    - 
-    stringCase: upper
+    stringCase: lower
   target:
    path: $.lowerKey
   
