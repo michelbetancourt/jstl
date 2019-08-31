@@ -16,6 +16,7 @@ import org.jstlang.domain.definition.ObjectDef;
 import org.jstlang.domain.definition.PathDef;
 import org.jstlang.domain.definition.SourceDef;
 import org.jstlang.domain.definition.TargetDef;
+import org.jstlang.domain.definition.ValueSourceDef;
 import org.jstlang.domain.definition.step.StepDef;
 import org.jstlang.domain.definition.step.StringCaseDef;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,10 +82,33 @@ class JSTLangCompilerTest {
                                              .build())
                             .build());
 
+        // transform a string into an integer
+        pathDefs.add(PathDef.builder()
+                .source(SourceDef.builder()
+                        .path("$.numberString")
+                        .build())
+                .target(TargetDef.builder()
+                        .path("$.number")
+                        .type(Integer.class)
+                        .build())
+                .build());
+
+        pathDefs.add(PathDef.builder()
+                .source(SourceDef.builder()
+                        .path("$.number")
+                        .build())
+                .sourceIs(ValueSourceDef.target)
+                .target(TargetDef.builder()
+                        .path("$.newNumberString")
+                        .type(String.class)
+                        .build())
+                .build());
+
         compiler = JSTLangCompiler.newInstance();
 
         sourceValues = Maps.newLinkedHashMap();
         sourceValues.put("key", "123");
+        sourceValues.put("numberString", "123");
         sourceValues.put("stringKey", "AbCdEf");
         sourceValues.put("keyNotRead", "this value is not picked up");
 
@@ -92,9 +116,6 @@ class JSTLangCompilerTest {
         sourceValues.put("nested", sourceNestedValues);
 
         sourceNestedValues.put("key", 123);
-
-        targetValues = Maps.newLinkedHashMap();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -107,6 +128,8 @@ class JSTLangCompilerTest {
         targetValues = (Map<String, Object>) actual;
 
         assertThat(targetValues, hasEntry("newKey", "123"));
+        assertThat(targetValues, hasEntry("number", 123));
+        assertThat(targetValues, hasEntry("newNumberString", "123"));
         assertThat(targetValues, hasKey("nested"));
         assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
 

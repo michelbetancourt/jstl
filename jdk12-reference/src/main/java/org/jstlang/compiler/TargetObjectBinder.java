@@ -50,6 +50,7 @@ public class TargetObjectBinder implements Function<Object, Object> {
             DocumentContext read = JsonPath.parse(sourceMap, jsonConfig);
             DocumentContext write = JsonPath.parse(targetMap, jsonConfig);
 
+            // Invokes all the  for a given mapping
             binder.accept(Documents.builder().sourceObject(read).targetObject(write).build());
             targetObject = targetConverter.apply(targetMap);
         } catch (RuntimeException e) {

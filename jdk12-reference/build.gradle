@@ -30,9 +30,11 @@ dependencies {
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
-    
+
     compileOnly 'org.projectlombok:lombok:1.18.8'
-	annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    testCompileOnly 'org.projectlombok:lombok:1.18.8'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
 	compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
 	// https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path
 	compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
