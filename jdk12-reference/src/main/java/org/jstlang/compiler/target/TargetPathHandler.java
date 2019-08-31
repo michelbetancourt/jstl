@@ -66,6 +66,7 @@ public class TargetPathHandler implements TargetHandler {
 
         Map<String, Object> root = targetObject.read(rootPath);
 
+        // Go through every node in the path and create it if does not exist
         Object nextValue = null;
         for (String path : splitPaths) {
             nextValue = root.get(path);
@@ -78,6 +79,7 @@ public class TargetPathHandler implements TargetHandler {
             }
         }
 
+        // add the value to the last node in the path
         root.put(lastKey, theValue);
 
     }

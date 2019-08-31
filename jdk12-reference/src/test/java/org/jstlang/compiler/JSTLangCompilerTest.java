@@ -68,14 +68,14 @@ class JSTLangCompilerTest {
 
         sourceValues = Maps.newLinkedHashMap();
         sourceValues.put("key", "123");
+        sourceValues.put("myString", "123");
+        sourceValues.put("someKey", "myValue");
         sourceValues.put("keyNotRead", "this value is not picked up");
 
         sourceNestedValues = Maps.newLinkedHashMap();
         sourceValues.put("nested", sourceNestedValues);
 
         sourceNestedValues.put("key", 123);
-
-        targetValues = Maps.newLinkedHashMap();
 
     }
 
@@ -89,8 +89,13 @@ class JSTLangCompilerTest {
         targetValues = (Map<String, Object>)actual;
 
         assertThat(targetValues, hasEntry("newKey", "123"));
+        // check that the type transformation happened successfully
+        assertThat(targetValues, hasEntry("myNumber", 123));
+        assertThat(targetValues, hasEntry("myDouble", 123.0));
+        // check nested objects were created
         assertThat(targetValues, hasKey("nested"));
         assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
+        assertThat(JsonPath.read(targetValues, "$.nested.someNewKey"), is("myValue"));
 
         // finally verify key not read is skipped
         assertThat(targetValues, not(hasKey("keyNotRead")));
