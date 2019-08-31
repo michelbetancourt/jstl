@@ -1,19 +1,6 @@
 fieldPaths:
  -
   source:
-   path: $.key
-  target:
-   path: $.newKey
- -
-  source:
-   path: $.nested.key
-  target:
-   path: $.nested.newKey
- - 
-  source: 
-   path: $.passThroughKey
- -
-  source:
    path: $.stringKey
   steps:
    - 

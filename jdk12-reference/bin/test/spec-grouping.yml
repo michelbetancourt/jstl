@@ -1,0 +1,31 @@
+fieldPaths:
+ -
+  source:
+   path: $.collection
+  steps:
+   - 
+    group:
+     by:
+      - $.field1
+      - $.field2
+  target:
+   path: $.grouppedCollection
+ -
+  source:
+   path: $.collection
+  steps:
+   - 
+    group:
+     by:
+      - $.field1
+      - $.field2
+    aggregate:
+      op: sum
+      fields:
+       - $.amount
+       - $.total
+  target:
+   path: $.aggregate
+  
+outputType: org.jstlang.util.ExtObject
+ 

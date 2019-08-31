@@ -1,10 +1,7 @@
 package org.jstlang.compiler;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.instanceOf;
 
 import java.net.URL;
@@ -15,6 +12,7 @@ import java.util.function.Function;
 import org.jstlang.converters.fasterjackson.FasterJacksonSpecificObjectReader;
 import org.jstlang.domain.definition.FieldPathDef;
 import org.jstlang.domain.definition.ObjectDef;
+import org.jstlang.util.ExtObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,9 +26,8 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
-import com.jayway.jsonpath.JsonPath;
 
-class JSTLangCompilerTest {
+class JSTLangCompilerStringTest {
 
     private ObjectDef objectDef;
     private List<FieldPathDef> pathDefs;
@@ -60,42 +57,31 @@ class JSTLangCompilerTest {
         objectDefConverter = FasterJacksonSpecificObjectReader.typeConverter(ObjectDef.class)
                 .mapper(mapper);
         
-        testResource = Resources.getResource("spec-keys.yml");
+        testResource = Resources.getResource("spec-strings.yml");
         
         objectDef = objectDefConverter.apply(Resources.toString(testResource, Charsets.UTF_8));
 
         compiler = JSTLangCompiler.newInstance();
 
         sourceValues = Maps.newLinkedHashMap();
-        sourceValues.put("key", "123");
-        sourceValues.put("keyNotRead", "this value is not picked up");
-
-        sourceNestedValues = Maps.newLinkedHashMap();
-        sourceValues.put("nested", sourceNestedValues);
-
-        sourceNestedValues.put("key", 123);
+        sourceValues.put("stringKey", "AbCdEf");
 
         targetValues = Maps.newLinkedHashMap();
 
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void testCompile() {
+
         Function<Object, Object> compiled = compiler.compile(objectDef);
         Object actual = compiled.apply(sourceValues);
 
-        assertThat(actual, instanceOf(Map.class));
-        targetValues = (Map<String, Object>)actual;
+        assertThat(actual, instanceOf(ExtObject.class));
+        targetValues = ((ExtObject)actual).getData();
 
-        assertThat(targetValues, hasEntry("newKey", "123"));
-        assertThat(targetValues, hasKey("nested"));
-        assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
-
-        // finally verify key not read is skipped
-        assertThat(targetValues, not(hasKey("keyNotRead")));
+        assertThat(targetValues, hasEntry("upperKey", "ABCDEF"));
+        assertThat(targetValues, hasEntry("lowerKey", "abcdef"));
         
-
     }
 
 }
