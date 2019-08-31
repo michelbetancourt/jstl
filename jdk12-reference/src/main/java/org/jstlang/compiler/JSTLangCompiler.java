@@ -41,6 +41,15 @@ public class JSTLangCompiler {
             .path(source.getPath())
             .build();
 
+    /**
+     * This method is responsible for setting up the configurations for all the mappings under a single Object Definition
+     *
+     * @param objectDef - Contains a set of instructions to be executed in the order that they were created
+     *
+     * @return - A lambda function that will apply a series of manipulations defined by the compilation/configuration process
+     *              to its input object and return an object of the type specified by the targetType.
+     *          Target type defaults to a Map<String,Object>
+     */
     public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
 
         List<FieldPathDef> pathDefs = Optional.ofNullable(objectDef.getFieldPaths()).orElse(Collections.emptyList());
@@ -84,7 +93,7 @@ public class JSTLangCompiler {
                     .orElseGet(() -> sourceToTargetProvider.apply(source));
             
             TargetHandler targetHandler = targetHandlerFactory.apply(target);
-            func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
+            func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler, pathDef.getSourceIs()));
         }
 
         return TargetObjectBinder.defaultBinder(func)
