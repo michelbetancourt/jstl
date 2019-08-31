@@ -65,7 +65,7 @@ public class JSTLangCompiler {
             PathDef pathDef = it.next();
 
             // prepare the source handling step
-            SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef);
+            SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef.getSource());
             // Extract and prepare all steps to be executed with a single function call
             List<StepDef> steps = Optional.ofNullable(pathDef)
                     .map(PathDef::getSteps)
