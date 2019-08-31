@@ -7,79 +7,63 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.instanceOf;
 
-import java.util.Collections;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.jstlang.converters.fasterjackson.FasterJacksonSpecificObjectReader;
+import org.jstlang.domain.definition.FieldPathDef;
 import org.jstlang.domain.definition.ObjectDef;
-import org.jstlang.domain.definition.PathDef;
-import org.jstlang.domain.definition.SourceDef;
-import org.jstlang.domain.definition.TargetDef;
-import org.jstlang.domain.definition.step.StepDef;
-import org.jstlang.domain.definition.step.StringCaseDef;
+import org.jstlang.util.ExtObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Lists;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
+import com.google.common.io.Resources;
 import com.jayway.jsonpath.JsonPath;
 
 class JSTLangCompilerTest {
 
     private ObjectDef objectDef;
-    private List<PathDef> pathDefs;
+    private List<FieldPathDef> pathDefs;
     private JSTLangCompiler compiler;
     private Map<String, Object> sourceValues;
     private Map<String, Object> sourceNestedValues;
     private Map<String, Object> targetValues;
+    private Function<Object, ObjectDef> objectDefConverter;
+    private ObjectMapper mapper;
+    private URL testResource;
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws Exception {
+        
+        // setup a good standard set of properties for mapping
+        mapper = new ObjectMapper(new YAMLFactory());
+        mapper.registerModule(new AfterburnerModule());
+        mapper.registerModule(new JavaTimeModule());
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        mapper.setSerializationInclusion(Include.NON_EMPTY);
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        objectDef = new ObjectDef();
-
-        pathDefs = Lists.newArrayList();
-        objectDef.setPaths(pathDefs);
-
-        pathDefs.add(PathDef.builder()
-                            .source(SourceDef.builder()
-                                             .path("$.key")
-                                             .build())
-                            .target(TargetDef.builder()
-                                             .path("$.newKey")
-                                             .build())
-                            .build());
-        pathDefs.add(PathDef.builder()
-                            .source(SourceDef.builder()
-                                             .path("$.nested.key")
-                                             .build())
-                            .target(TargetDef.builder()
-                                             .path("$.nested.newKey")
-                                             .build())
-                            .build());
-        pathDefs.add(PathDef.builder()
-                            .source(SourceDef.builder()
-                                             .path("$.stringKey")
-                                             .build())
-                            .steps(Collections.singletonList(StepDef.builder()
-                                                                    .stringCase(StringCaseDef.upper)
-                                                                    .build()))
-                            .target(TargetDef.builder()
-                                             .path("$.upperKey")
-                                             .build())
-                            .build());
-        pathDefs.add(PathDef.builder()
-                            .source(SourceDef.builder()
-                                             .path("$.stringKey")
-                                             .build())
-                            .steps(Collections.singletonList(StepDef.builder()
-                                                                    .stringCase(StringCaseDef.lower)
-                                                                    .build()))
-                            .target(TargetDef.builder()
-                                             .path("$.lowerKey")
-                                             .build())
-                            .build());
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, false);
+        
+        objectDefConverter = FasterJacksonSpecificObjectReader.typeConverter(ObjectDef.class)
+                .mapper(mapper);
+        
+        testResource = Resources.getResource("spec-example.yml");
+        
+        objectDef = objectDefConverter.apply(Resources.toString(testResource, Charsets.UTF_8));
 
         compiler = JSTLangCompiler.newInstance();
 
@@ -97,14 +81,13 @@ class JSTLangCompilerTest {
 
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void testCompile() {
         Function<Object, Object> compiled = compiler.compile(objectDef);
         Object actual = compiled.apply(sourceValues);
 
-        assertThat(actual, instanceOf(Map.class));
-        targetValues = (Map<String, Object>) actual;
+        assertThat(actual, instanceOf(ExtObject.class));
+        targetValues = ((ExtObject)actual).getData();
 
         assertThat(targetValues, hasEntry("newKey", "123"));
         assertThat(targetValues, hasKey("nested"));

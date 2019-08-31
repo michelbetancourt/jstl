@@ -16,8 +16,10 @@ import org.jstlang.compiler.step.StepAggregateFactory;
 import org.jstlang.compiler.target.TargetHandler;
 import org.jstlang.compiler.target.TargetHandlerFactory;
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
+import org.jstlang.domain.definition.FieldPathDef;
 import org.jstlang.domain.definition.ObjectDef;
-import org.jstlang.domain.definition.PathDef;
+import org.jstlang.domain.definition.SourceDef;
+import org.jstlang.domain.definition.TargetDef;
 import org.jstlang.domain.definition.step.StepDef;
 
 import lombok.RequiredArgsConstructor;
@@ -34,10 +36,14 @@ public class JSTLangCompiler {
     private @Nonnull SourceHandlerFactory sourceHandlerFactory = SourceHandlerFactory.defaultHandler();
     private @Nonnull StepAggregateFactory stepHandlerFactory = StepAggregateFactory.defaultHandler();
     private @Nonnull TargetHandlerFactory targetHandlerFactory = TargetHandlerFactory.defaultHandler();
+    private @Nonnull Function<SourceDef, TargetDef> sourceToTargetProvider = source -> TargetDef.builder()
+            // TODO determine other options
+            .path(source.getPath())
+            .build();
 
     public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
 
-        List<PathDef> pathDefs = Optional.ofNullable(objectDef.getPaths()).orElse(Collections.emptyList());
+        List<FieldPathDef> pathDefs = Optional.ofNullable(objectDef.getFieldPaths()).orElse(Collections.emptyList());
 
         if (pathDefs.isEmpty()) {
             throw new IllegalArgumentException("No mappings to compile!");
@@ -49,23 +55,40 @@ public class JSTLangCompiler {
                     doc.getTargetObject());
         };
 
-        Iterator<PathDef> it = pathDefs.stream().filter(Objects::nonNull).iterator();
+        Iterator<FieldPathDef> it = pathDefs.stream().filter(Objects::nonNull).iterator();
         int totalBindings = 0;
         while (it.hasNext()) {
+            // count the total bindings
             totalBindings++;
-            PathDef pathDef = it.next();
-            SourceHandler sourceHandler = sourceHandlerFactory.apply(pathDef.getSource());
+            
+            // obtain the next definition
+            FieldPathDef pathDef = it.next();
+            
+            // determine the source, which is required
+            SourceDef source = pathDef.getSource();
+            if(null == source) {
+                if(!objectDef.isSkipMissingSource()) {
+                    throw new IllegalStateException("Source is missing on fieldDefinition=" + pathDef);
+                }
+                log.warn("Missing source for fieldDefinition=" + pathDef);
+                continue;
+            }
+            SourceHandler sourceHandler = sourceHandlerFactory.apply(source);
             List<StepDef> steps = Optional.ofNullable(pathDef)
-                    .map(PathDef::getSteps)
+                    .map(FieldPathDef::getSteps)
                     .orElse(Collections.emptyList());
             totalBindings += steps.size();
             Function<Object, Object> stepHandler = stepHandlerFactory.apply(steps);
-            TargetHandler targetHandler = targetHandlerFactory.apply(pathDef.getTarget());
+            
+            TargetDef target = Optional.ofNullable(pathDef.getTarget())
+                    .orElseGet(() -> sourceToTargetProvider.apply(source));
+            
+            TargetHandler targetHandler = targetHandlerFactory.apply(target);
             func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler));
         }
 
         return TargetObjectBinder.defaultBinder(func)
                 .totalBindings(totalBindings)
-                .targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getTargetType()));
+                .targetConverter(FasterJacksonObjectConverter.typeConverter(objectDef.getOutputType()));
     }
 }

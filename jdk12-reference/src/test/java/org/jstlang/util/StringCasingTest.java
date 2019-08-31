@@ -51,5 +51,5 @@ class StringCasingTest {
         Object actual = StringCasing.toUpper(" junit  test ");
         assertThat(actual, is(" JUNIT  TEST "));
     }
-
+    
 }
