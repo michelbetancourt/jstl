@@ -70,6 +70,7 @@ class JSTLangCompilerTest {
         sourceValues.put("key", "123");
         sourceValues.put("myString", "123");
         sourceValues.put("someKey", "myValue");
+        sourceValues.put("unskippableIfEmptyKey", Maps.newLinkedHashMap());
         sourceValues.put("keyNotRead", "this value is not picked up");
 
         sourceNestedValues = Maps.newLinkedHashMap();
@@ -97,6 +98,13 @@ class JSTLangCompilerTest {
         assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
         assertThat(JsonPath.read(targetValues, "$.nested.someNewKey"), is("myValue"));
 
+        // TODO: find a way to stop Json parser from treating empty values as if they were null
+        // TODO: enable assertion below when above requirement is completed
+//        assertThat(targetValues, hasEntry("unskippableIfNullKey", null));
+
+        // verify null value is persisted when told not to skip
+        // this checks that the ifEmpty check for skip fails when the value is null
+        assertThat(targetValues, hasEntry("unskippableIfNullKey", null));
         // finally verify key not read is skipped
         assertThat(targetValues, not(hasKey("keyNotRead")));
         
