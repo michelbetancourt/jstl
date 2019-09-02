@@ -24,5 +24,6 @@ public class SourceDef {
     private List<String> findLast;
 
     private String defaultValue;
-
+    @Builder.Default
+    private ValueSourceDef sourceIs = ValueSourceDef.source;
 }

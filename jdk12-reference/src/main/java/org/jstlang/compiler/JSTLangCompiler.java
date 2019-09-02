@@ -93,7 +93,7 @@ public class JSTLangCompiler {
                     .orElseGet(() -> sourceToTargetProvider.apply(source));
             
             TargetHandler targetHandler = targetHandlerFactory.apply(target);
-            func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler, pathDef.getSourceIs()));
+            func = func.andThen(SourceToTargetBinder.binder(sourceHandler, stepHandler, targetHandler, source.getSourceIs()));
         }
 
         return TargetObjectBinder.defaultBinder(func)

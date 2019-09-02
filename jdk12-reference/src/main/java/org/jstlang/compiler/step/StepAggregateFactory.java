@@ -18,6 +18,7 @@ import com.google.common.collect.Maps;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jstlang.util.SkipSupport;
 
 @RequiredArgsConstructor(staticName = "defaultHandler")
 @Slf4j
@@ -74,9 +75,17 @@ public class StepAggregateFactory implements Function<List<StepDef>,  Function<O
                 log.debug("No plugin found for step,property={}", property);
                 continue;
             }
-            
-            handler = handler.andThen(stepFactory.apply(pathDef));
-            
+
+            Function<Object,Object> skipLogic = val -> {
+                // If the step should be skipped, return the input value
+                if(SkipSupport.shouldSkip(pathDef.getSkip(), val)) {
+                    return val;
+                }
+                return stepFactory.apply(pathDef) // get the step to execute
+                        .apply(val);              // execute step
+            };
+
+            handler = handler.andThen(skipLogic);
         }
         
         final int theTotalSteps = totalSteps;

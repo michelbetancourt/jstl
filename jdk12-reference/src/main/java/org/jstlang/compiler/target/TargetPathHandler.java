@@ -17,6 +17,8 @@ import com.jayway.jsonpath.JsonPath;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jstlang.domain.definition.SkipDef;
+import org.jstlang.util.SkipSupport;
 
 @RequiredArgsConstructor
 @Setter
@@ -30,6 +32,7 @@ public class TargetPathHandler implements TargetHandler {
 
     private JsonPath splitPath = null;
     private String lastKey = null;
+    private SkipDef skipDef = SkipDef.builder().build();
     private @Nonnull JsonPath rootPath = JsonPath.compile("$");
 
     public static TargetPathHandler targetPath(@Nonnull String targetPathString) {
@@ -56,6 +59,11 @@ public class TargetPathHandler implements TargetHandler {
     @Override
     public void accept(final Object value, final DocumentContext targetObject) {
 
+        // check if the value should be skipped
+        if(SkipSupport.shouldSkip(skipDef, value)){
+            return;
+        }
+
         Object theValue = typeConverter.apply(value);
 
         // for standard paths just apply directly
@@ -81,7 +89,6 @@ public class TargetPathHandler implements TargetHandler {
 
         // add the value to the last node in the path
         root.put(lastKey, theValue);
-
     }
 
 }

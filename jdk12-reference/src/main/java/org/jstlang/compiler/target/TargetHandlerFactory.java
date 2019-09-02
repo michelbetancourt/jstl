@@ -14,6 +14,7 @@ public class TargetHandlerFactory implements Function<TargetDef, TargetHandler> 
     public TargetHandler apply(TargetDef definition) {
 
         return TargetPathHandler.targetPath(definition.getPath())
+                .skipDef(definition.getSkip())
                 .typeConverter(FasterJacksonObjectConverter.typeConverter(definition.getType()));
     }
 

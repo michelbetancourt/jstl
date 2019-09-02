@@ -18,10 +18,6 @@ public class FieldPathDef {
 
     private SourceDef source;
     private TargetDef target;
-
-    @Builder.Default
-    private ValueSourceDef sourceIs = ValueSourceDef.source;
-
     private List<StepDef> steps;
 
 }
