@@ -21,6 +21,7 @@ fields:
        - $.total
    - 
     put.path: $.aggregate
-  
+ -
+   get\.path: $.field
 outputType: org.jstlang.util.ExtObject
  
