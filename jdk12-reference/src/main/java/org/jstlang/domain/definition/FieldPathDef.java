@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FieldPathDef {
 
-    private SourceDef source;
-    private TargetDef target;
+    private SourceDef get;
+    private TargetDef put;
     private List<StepDef> steps;
 
 }

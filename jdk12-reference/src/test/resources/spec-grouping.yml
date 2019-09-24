@@ -1,22 +1,17 @@
-fieldPaths:
+fields:
  -
-  source:
-   path: $.collection
+  get.path: $.collection
   steps:
    - 
-    group:
-     by:
+    group.by:
       - $.field1
       - $.field2
-  target:
-   path: $.grouppedCollection
+  put.path: $.grouppedCollection
  -
-  source:
-   path: $.collection
+  get.path: $.collection
   steps:
    - 
-    group:
-     by:
+    group.by:
       - $.field1
       - $.field2
     aggregate:
@@ -24,8 +19,7 @@ fieldPaths:
       fields:
        - $.amount
        - $.total
-  target:
-   path: $.aggregate
+  put.path: $.aggregate
   
 outputType: org.jstlang.util.ExtObject
  

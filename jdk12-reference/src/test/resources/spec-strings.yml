@@ -1,20 +1,16 @@
-fieldPaths:
+fields:
  -
-  source:
-   path: $.stringKey
+  get.path: $.stringKey
   steps:
    - 
     stringCase: upper
-  target:
-   path: $.upperKey
+  put.path: $.upperKey
  -
-  source:
-   path: $.stringKey
+  get.path: $.stringKey
   steps:
    - 
     stringCase: lower
-  target:
-   path: $.lowerKey
+  put.path: $.lowerKey
   
 outputType: org.jstlang.util.ExtObject
  
