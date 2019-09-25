@@ -24,6 +24,12 @@ ext {
 }
 
 dependencies {
+    // aws lambda support
+    compile (
+            'com.amazonaws:aws-lambda-java-core:1.2.0',
+            'com.amazonaws:aws-lambda-java-events:2.2.6'
+    )
+
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
 
@@ -38,6 +44,8 @@ dependencies {
     
     compileOnly 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    testCompile 'org.projectlombok:lombok:1.18.8'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
 	compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
 	// https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path
 	compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
@@ -64,6 +72,16 @@ dependencies {
 	
 	
 }
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildZip
 
 test {
     // Use junit platform for unit tests

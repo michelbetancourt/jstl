@@ -52,7 +52,7 @@ public class TargetPathHandler implements TargetHandler {
     }
 
     static List<String> splitPaths(String path) {
-        return Arrays.stream(path.split("[\\.\\$]")).filter(Objects::nonNull).filter(val -> !val.isBlank())
+        return Arrays.stream(path.split("[\\.\\$]")).filter(Objects::nonNull).filter(val -> !val.isEmpty())
                 .collect(Collectors.toList());
     }
 
