@@ -8,7 +8,7 @@ public class HandlerTest {
     @Test
     public void test() {
         ParserLambda l = new ParserLambda();
-        Object o = l.parserHandler(Maps.newHashMap(), null);
-        System.out.println(o);
+//        Object o = l.parserHandler(Maps.newHashMap(), null);
+//        System.out.println(o);
     }
 }
