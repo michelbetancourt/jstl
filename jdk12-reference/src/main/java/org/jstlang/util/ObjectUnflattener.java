@@ -64,7 +64,12 @@ public class ObjectUnflattener implements Function<Object, Object> {
                     Object unflattenedValue = this.typeChecker(value);
                     // remove escape character from the key
                     lastKey = lastKey.replace(splitEscape, "");
-                    root.put(lastKey, unflattenedValue);
+                    // if dot notation and normal yaml/json notation are used for the same path then both values will be added in the nearest common parent
+                    if(unflattenedMap.containsKey(lastKey) && unflattenedMap.get(lastKey) instanceof Map && unflattenedValue instanceof Map){
+                        ((Map<String,Object>)unflattenedMap.get(lastKey)).putAll((Map<String,Object>)unflattenedValue);
+                    }else {
+                        root.put(lastKey, unflattenedValue);
+                    }
                 });
 
         return unflattenedMap;
