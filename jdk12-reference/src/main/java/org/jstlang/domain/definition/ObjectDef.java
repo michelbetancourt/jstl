@@ -21,6 +21,6 @@ public class ObjectDef {
     private boolean skipMissingSource = true;
     
     
-    private List<FieldPathDef> fieldPaths;
+    private List<FieldPathDef> fields;
     private Class<?> outputType;
 }

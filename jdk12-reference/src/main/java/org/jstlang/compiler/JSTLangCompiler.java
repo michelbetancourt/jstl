@@ -52,7 +52,7 @@ public class JSTLangCompiler {
      */
     public Function<Object, Object> compile(@Nonnull ObjectDef objectDef) {
 
-        List<FieldPathDef> pathDefs = Optional.ofNullable(objectDef.getFieldPaths()).orElse(Collections.emptyList());
+        List<FieldPathDef> pathDefs = Optional.ofNullable(objectDef.getFields()).orElse(Collections.emptyList());
 
         if (pathDefs.isEmpty()) {
             throw new IllegalArgumentException("No mappings to compile!");
@@ -74,7 +74,7 @@ public class JSTLangCompiler {
             FieldPathDef pathDef = it.next();
             
             // determine the source, which is required
-            SourceDef source = pathDef.getSource();
+            SourceDef source = pathDef.getGet();
             if(null == source) {
                 if(!objectDef.isSkipMissingSource()) {
                     throw new IllegalStateException("Source is missing on fieldDefinition=" + pathDef);
@@ -89,7 +89,7 @@ public class JSTLangCompiler {
             totalBindings += steps.size();
             Function<Object, Object> stepHandler = stepHandlerFactory.apply(steps);
             
-            TargetDef target = Optional.ofNullable(pathDef.getTarget())
+            TargetDef target = Optional.ofNullable(pathDef.getPut())
                     .orElseGet(() -> sourceToTargetProvider.apply(source));
             
             TargetHandler targetHandler = targetHandlerFactory.apply(target);

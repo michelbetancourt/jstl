@@ -1,48 +1,34 @@
-fieldPaths:
+fields:
  -
-  source:
-   path: $.key
-  target:
-   path: $.newKey
+  get.path: $.key
+  put.path: $.newKey
  -
-  source:
-   path: $.nested.key
-  target:
-   path: $.nested.newKey
+  get.path: $.nested.key
+  put.path: $.nested.newKey
  -
-  source:
-   path: $.someKey
-  target:
-   path: $.nested.someNewKey
+  get.path: $.someKey
+  put.path: $.nested.someNewKey
  -
-  source:
-   path: $.myString
-  target:
-   type: java.lang.Integer
+  get.path: $.myString
+  put.type: java.lang.Integer
+  put.path: $.myNumber
+ -
+  get:
+   sourceIs: target # sourceIs allows the framework to use the newly created myNumber field (from the Target Object) as the source for the mappings.
    path: $.myNumber
- -
-  source:
-   # sourceIs allows the framework to use the newly created myNumber field (from the Target Object) as the source for the mappings.
-   sourceIs: target
-   path: $.myNumber
-  target:
+  put:
    type: java.lang.Double
    path: $.myDouble
  -
-  source:
-   path: $.unskippableIfEmptyKey
-  target:
-   skip:
-    ifEmpty: false
-   path: $.unskippableIfEmptyKey
+  get.path: $.unskippableIfEmptyKey
+  put.skip.ifEmpty: false
+  put.path: $.unskippableIfEmptyKey
  -
-  source:
-   path: $.unskippableIfNullKey
-  target:
+  get.path: $.unskippableIfNullKey
+  put:
    skip:
     ifNull: false
    path: $.unskippableIfNullKey
  -
-  source: 
-   path: $.passThroughKey
+  get.path: $.passThroughKey
  

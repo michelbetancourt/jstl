@@ -7,63 +7,30 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.instanceOf;
 
-import java.net.URL;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.jstlang.converters.fasterjackson.FasterJacksonSpecificObjectReader;
-import org.jstlang.domain.definition.FieldPathDef;
 import org.jstlang.domain.definition.ObjectDef;
+import org.jstlang.parser.YamldParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
-import com.google.common.io.Resources;
 import com.jayway.jsonpath.JsonPath;
 
 class JSTLangCompilerTest {
 
     private ObjectDef objectDef;
-    private List<FieldPathDef> pathDefs;
     private JSTLangCompiler compiler;
     private Map<String, Object> sourceValues;
     private Map<String, Object> sourceNestedValues;
     private Map<String, Object> targetValues;
-    private Function<Object, ObjectDef> objectDefConverter;
-    private ObjectMapper mapper;
-    private URL testResource;
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        
-        // setup a good standard set of properties for mapping
-        mapper = new ObjectMapper(new YAMLFactory());
-        mapper.registerModule(new AfterburnerModule());
-        mapper.registerModule(new JavaTimeModule());
-        mapper.setSerializationInclusion(Include.NON_NULL);
-        mapper.setSerializationInclusion(Include.NON_EMPTY);
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        YamldParser<ObjectDef> parser = YamldParser.toType(ObjectDef.class);
 
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, false);
-        
-        objectDefConverter = FasterJacksonSpecificObjectReader.typeConverter(ObjectDef.class)
-                .mapper(mapper);
-        
-        testResource = Resources.getResource("spec-keys.yml");
-        
-        objectDef = objectDefConverter.apply(Resources.toString(testResource, Charsets.UTF_8));
-
+        objectDef = parser.apply("spec-keys.yml");
         compiler = JSTLangCompiler.newInstance();
 
         sourceValues = Maps.newLinkedHashMap();
