@@ -1,6 +1,7 @@
 package org.jstlang.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.jstlang.compiler.JSTLangCompiler;
 import org.jstlang.converters.fasterjackson.FasterJacksonObjectConverter;
 import org.jstlang.domain.definition.ObjectDef;
@@ -15,6 +16,11 @@ public class JstlLambda {
     private JSTLangCompiler compiler = JSTLangCompiler.newInstance();
 
     public Object jstlHandler(JstlLamdaInput lamdaInput, Context context){
+
+        LambdaLogger logger = context.getLogger();
+
+        logger.log(lamdaInput.toString());
+
         ObjectUnflattener unflattener = ObjectUnflattener.getDefault();
         // Get the mapping definition that will be used to transform the input
         ObjectDef mappingDefinitions = (ObjectDef) converter.apply(unflattener.apply(lamdaInput.getMappings()));
