@@ -1,6 +1,8 @@
 fields:
  -
   get.path: $.key
+ -
+  get.path: $.key
   put.path: $.newKey
  -
   get.path: $.nested.key

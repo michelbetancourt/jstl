@@ -56,6 +56,7 @@ class JSTLangCompilerTest {
         assertThat(actual, instanceOf(Map.class));
         targetValues = (Map<String, Object>)actual;
 
+        assertThat(targetValues, hasEntry("key", "123"));
         assertThat(targetValues, hasEntry("newKey", "123"));
         // check that the type transformation happened successfully
         assertThat(targetValues, hasEntry("myNumber", 123));

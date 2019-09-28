@@ -1,17 +1,19 @@
 fields:
  -
   get.path: $.collection
+  get:
+    value: myValue
   do:
-   - 
+   -
     group.by:
       - $.field1
       - $.field2
-   - 
+   -
     put: $.grouppedCollection
  -
   get.path:
   do:
-   - 
+   -
     group.by:
       - $.field1
       - $.field2
@@ -19,7 +21,7 @@ fields:
     aggregate.fields:
        - $.amount
        - $.total
-   - 
+   -
     put.path: $.aggregate
  -
    get\.path: $.field

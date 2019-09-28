@@ -22,11 +22,8 @@ public class ParserTest {
 
     @BeforeEach
     public void setup() throws IOException {
-
         YamldParser<Map> parser = YamldParser.toType(Map.class);
         mappings = (Map<String,Object>) parser.apply("new-spec-grouping.yml");
-
-
     }
 
     @Test
@@ -39,6 +36,7 @@ public class ParserTest {
 
         // Validation
         assertThat(get1, hasEntry("path","$.collection"));
+        assertThat(get1, hasEntry("value","myValue"));
         assertThat(get2, hasEntry("path",null));
         // check that the escape character was removed
         assertThat(literalDotTest, hasEntry("get.path", "$.field"));
