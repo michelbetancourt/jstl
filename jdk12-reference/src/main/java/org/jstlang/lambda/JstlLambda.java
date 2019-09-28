@@ -14,7 +14,7 @@ public class JstlLambda {
     private final Function<Object, Object> converter = FasterJacksonObjectConverter.typeConverter(ObjectDef.class);
     private JSTLangCompiler compiler = JSTLangCompiler.newInstance();
 
-    public Object parserHandler(JstlLamdaInput lamdaInput, Context context){
+    public Object jstlHandler(JstlLamdaInput lamdaInput, Context context){
         ObjectUnflattener unflattener = ObjectUnflattener.getDefault();
         // Get the mapping definition that will be used to transform the input
         ObjectDef mappingDefinitions = (ObjectDef) converter.apply(unflattener.apply(lamdaInput.getMappings()));
