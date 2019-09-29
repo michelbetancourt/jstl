@@ -31,6 +31,7 @@ class JSTLangCompilerStringTest {
 
         sourceValues = Maps.newLinkedHashMap();
         sourceValues.put("stringKey", "AbCdEf");
+        sourceValues.put("paddingKey", "8");
 
         targetValues = Maps.newLinkedHashMap();
 
@@ -47,7 +48,9 @@ class JSTLangCompilerStringTest {
 
         assertThat(targetValues, hasEntry("upperKey", "ABCDEF"));
         assertThat(targetValues, hasEntry("lowerKey", "abcdef"));
-        
+        assertThat(targetValues, hasEntry("paddingLeftOutput", "008"));
+        assertThat(targetValues, hasEntry("paddingRightOutput", "800"));
+
     }
 
 }

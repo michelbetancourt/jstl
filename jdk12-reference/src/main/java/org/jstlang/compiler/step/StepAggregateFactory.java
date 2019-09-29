@@ -29,7 +29,7 @@ public class StepAggregateFactory implements Function<List<StepDef>,  Function<O
     static {
         defaultSteps.put("stringCase", StringCaseHandlerFactory.defaultHandler());
         defaultSteps.put("subString", StringCaseHandlerFactory.defaultHandler());
-        defaultSteps.put("charPadding", StringCaseHandlerFactory.defaultHandler());
+        defaultSteps.put("charPadding", StringPaddingStepFactory.defaultHandler());
         defaultSteps.put("number", NumberDefStepFactory.defaultHandler());
     }
 
