@@ -11,6 +11,20 @@ fields:
    - 
     stringCase: lower
   put.path: $.lowerKey
-  
+ -
+  get.path: $.paddingKey
+  steps:
+   -
+    charPadding.left: '0'
+    charPadding.limit: 3
+  put.path: $.paddingLeftOutput
+ -
+  get.path: $.paddingKey
+  steps:
+   -
+    charPadding.right: '0'
+    charPadding.limit: 3
+  put.path: $.paddingRightOutput
+
 outputType: org.jstlang.util.ExtObject
  
