@@ -1,7 +1,7 @@
 fields:
  -
   get.path: $.collection
-  steps:
+  do:
    - 
     group.by:
       - $.field1
@@ -9,7 +9,7 @@ fields:
   put.path: $.grouppedCollection
  -
   get.path: $.collection
-  steps:
+  do:
    - 
     group.by:
       - $.field1

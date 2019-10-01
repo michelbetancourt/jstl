@@ -1,26 +1,26 @@
 fields:
  -
   get.path: $.stringKey
-  steps:
+  do:
    - 
     stringCase: upper
   put.path: $.upperKey
  -
   get.path: $.stringKey
-  steps:
+  do:
    - 
     stringCase: lower
   put.path: $.lowerKey
  -
   get.path: $.paddingKey
-  steps:
+  do:
    -
     charPadding.left: '0'
     charPadding.limit: 3
   put.path: $.paddingLeftOutput
  -
   get.path: $.paddingKey
-  steps:
+  do:
    -
     charPadding.right: '0'
     charPadding.limit: 3
