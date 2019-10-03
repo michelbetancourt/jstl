@@ -33,4 +33,14 @@ fields:
    path: $.unskippableIfNullKey
  -
   get.path: $.passThroughKey
- 
+ -
+  get.values:
+   - $.key
+   - $.someKey
+  get.joiner: "/"
+  put.path: $.joinOutput
+ -
+  get.values:
+   - $.key
+   - $.someKey
+  put.path: $.noJoinerOutput
