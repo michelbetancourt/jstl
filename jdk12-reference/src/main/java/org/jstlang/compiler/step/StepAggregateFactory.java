@@ -31,6 +31,7 @@ public class StepAggregateFactory implements Function<List<StepDef>,  Function<O
         defaultSteps.put("subString", StringCaseHandlerFactory.defaultHandler());
         defaultSteps.put("charPadding", StringPaddingStepFactory.defaultHandler());
         defaultSteps.put("number", NumberDefStepFactory.defaultHandler());
+        defaultSteps.put("aggregate", AggregateDefStepFactory.defaultHandler());
     }
 
     private Function<Object, ExtObject> extObjectConverter = FasterJacksonExtObjectConverter.typeConverter();
