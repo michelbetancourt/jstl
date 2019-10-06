@@ -66,6 +66,10 @@ class JSTLangCompilerTest {
         assertThat(JsonPath.read(targetValues, "$.nested.newKey"), is(123));
         assertThat(JsonPath.read(targetValues, "$.nested.someNewKey"), is("myValue"));
 
+        assertThat(JsonPath.read(targetValues, "$.joinOutput"), is("123/myValue"));
+        // test default joiner. It should be the empty string if no joiner is provided
+        assertThat(JsonPath.read(targetValues, "$.noJoinerOutput"), is("123myValue"));
+
         // TODO: find a way to stop Json parser from treating empty values as if they were null
         // TODO: enable assertion below when above requirement is completed
 //        assertThat(targetValues, hasEntry("unskippableIfNullKey", null));
