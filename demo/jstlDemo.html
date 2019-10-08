@@ -9,7 +9,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://horacio-personal-projects.s3.us-east-2.amazonaws.com/js-yaml.min.js"></script>
 <style type="text/css" media="screen">
-    #object { 
+    /* #object { 
         position: absolute;
         top: 0;
         right: 66%;
@@ -40,24 +40,62 @@
         bottom: 0;
         left: 50%;
         width: 100px;
+    } */
+     #object { 
+         flex: 1;
+    }
+    #mappings { 
+         flex: 1;
+        /* height: 800px;
+        width: 900px; */
+    }
+    #output { 
+         flex: 1;
+        /* height: 800px;
+        width: 900px; */
+    }
+    #tryIt { 
+        /* position: absolute;
+        top: 62%;
+        right: 50%;
+        bottom: 0;
+        left: 50%; */
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .myContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 800px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        height: 100%;
     }
 
     #loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  width: 150px;
-  height: 150px;
-  margin: -75px 0 0 -75px;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
 
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
@@ -91,8 +129,8 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="row">
+<div class="myContainer">
+    <div class="content">
 <div id="object">{
     "somePath": "myValue"
 }</div>
