@@ -49,8 +49,9 @@
         /* height: 800px;
         width: 900px; */
     }
-    #output { 
+    .column { 
          flex: 1;
+         flex-direction: column;
         /* height: 800px;
         width: 900px; */
     }
@@ -138,8 +139,13 @@
  - get.path: $.somePath
 
 </div>
-<pre id="output" class="card card-body bg-light">
-</pre>
+<div class="column card card-body bg-light">
+    <pre id="output" >
+    </pre>
+    <div id="timeTaken">
+
+    </div>
+</div>
 
 </div>
 <div id="tryIt">
@@ -160,6 +166,7 @@
     $("#tryIt").click(()=> {
         var loader = '<div id="loader"></div>';
         $("#output").html(loader)
+        $("#timeTaken").html("")
         var data = {}
         data.sourceObject = jsyaml.load(editor.getValue());
         data.mappings = jsyaml.load(mappings.getValue());
@@ -170,8 +177,14 @@
         url: url,
         data: JSON.stringify(data),
         success: function(data,status) {
-                $("#output").text(JSON.stringify(data, null, 2))
-                console.log(JSON.stringify(data, null, 2))
+                if(data.result){
+                    $("#output").text(JSON.stringify(data.result, null, 2))
+                    $("#timeTaken").text("Exectution Time: "+data.executionTime+" ms")
+                    // remove loader
+                    $("#loader").remove();
+                }else{
+                    $("#output").text("An error occured when processing the request\n"+data)
+                }
             }
         });
 
