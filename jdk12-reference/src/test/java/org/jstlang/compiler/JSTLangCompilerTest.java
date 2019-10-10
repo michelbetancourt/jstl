@@ -7,9 +7,12 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.instanceOf;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.google.common.collect.Lists;
 import org.jstlang.domain.definition.ObjectDef;
 import org.jstlang.parser.YamldParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +48,17 @@ class JSTLangCompilerTest {
 
         sourceNestedValues.put("key", 123);
 
+        Map<String,Object> map1 = Maps.newLinkedHashMap();
+        Map<String,Object> map2 = Maps.newLinkedHashMap();
+
+        map1.put("total", 10);
+        map1.put("amount", 10.2);
+
+        map2.put("total", 20);
+        map2.put("amount", 20.2);
+
+        List<Object> list = Lists.newArrayList(map1, map2);
+        sourceValues.put("collection", list);
     }
 
     @SuppressWarnings("unchecked")
@@ -69,6 +83,10 @@ class JSTLangCompilerTest {
         assertThat(JsonPath.read(targetValues, "$.joinOutput"), is("123/myValue"));
         // test default joiner. It should be the empty string if no joiner is provided
         assertThat(JsonPath.read(targetValues, "$.noJoinerOutput"), is("123myValue"));
+
+        // test aggregate sum
+        assertThat(JsonPath.read(targetValues, "$.sumOutput.total"), is(BigDecimal.valueOf(30)));
+        assertThat(JsonPath.read(targetValues, "$.sumOutput.amount"), is(BigDecimal.valueOf(30.4)));
 
         // TODO: find a way to stop Json parser from treating empty values as if they were null
         // TODO: enable assertion below when above requirement is completed

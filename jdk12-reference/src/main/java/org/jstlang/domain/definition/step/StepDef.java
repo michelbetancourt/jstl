@@ -19,6 +19,7 @@ public class StepDef {
     private CharPaddingDef charPadding;
     private NumberDef number;
     private IterableDef iterable;
+    private AggregateStep aggregate;
     
     @Builder.Default
     private SkipDef skip = SkipDef.builder().build();

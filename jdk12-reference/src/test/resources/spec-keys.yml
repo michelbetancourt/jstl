@@ -44,3 +44,12 @@ fields:
    - $.key
    - $.someKey
   put.path: $.noJoinerOutput
+ -
+  get.path: $.collection
+  do:
+  - aggregate:
+     op: sum
+     fields:
+      - $.amount
+      - $.total
+  put.path: $.sumOutput
