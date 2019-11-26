@@ -1,8 +1,7 @@
 fields:
  -
   get.path: $.collection
-  get:
-    value: myValue
+  get.value: myValue
   do:
    -
     group.by:
