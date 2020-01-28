@@ -9,7 +9,40 @@ fieldPaths:
    path: $.nested.key
   target:
    path: $.nested.newKey
- - 
+ -
+  source:
+   path: $.someKey
+  target:
+   path: $.nested.someNewKey
+ -
+  source:
+   path: $.myString
+  target:
+   type: java.lang.Integer
+   path: $.myNumber
+ -
+  source:
+   # sourceIs allows the framework to use the newly created myNumber field (from the Target Object) as the source for the mappings.
+   sourceIs: target
+   path: $.myNumber
+  target:
+   type: java.lang.Double
+   path: $.myDouble
+ -
+  source:
+   path: $.unskippableIfEmptyKey
+  target:
+   skip:
+    ifEmpty: false
+   path: $.unskippableIfEmptyKey
+ -
+  source:
+   path: $.unskippableIfNullKey
+  target:
+   skip:
+    ifNull: false
+   path: $.unskippableIfNullKey
+ -
   source: 
    path: $.passThroughKey
  
