@@ -1,0 +1,26 @@
+fields:
+ -
+  get.path: $.collection
+  do:
+   - 
+    group.by:
+      - $.field1
+      - $.field2
+   - 
+    put: $.grouppedCollection
+ -
+  get.path:
+  do:
+   - 
+    group.by:
+      - $.field1
+      - $.field2
+    aggregate.op: sum
+    aggregate.fields:
+       - $.amount
+       - $.total
+   - 
+    put.path: $.aggregate
+  
+outputType: org.jstlang.util.ExtObject
+ 
